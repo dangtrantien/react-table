@@ -1,0 +1,88 @@
+table {
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  width: 100%;
+}
+
+table thead th {
+  position: relative;
+  border: 1px solid #ddd;
+  text-align: left;
+  color: #1976d2;
+  padding: 10px;
+}
+
+table thead th div {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+table thead .dropDown {
+  position: absolute;
+  right: 0px;
+  top: 10px;
+}
+
+table thead .dropDown .more-vert {
+  cursor: pointer;
+  position: relative;
+  color: grey;
+}
+
+table thead .more-vert:hover {
+  background-color: rgba(221, 221, 221, 0.8);
+  border-radius: 50%;
+}
+
+table thead th:hover {
+  background-color: rgba(221, 221, 221, 0.4);
+}
+
+table tbody td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  height: 50px;
+  overflow: auto;
+}
+
+table tbody td.number {
+  color: #5468ff;
+}
+
+table tbody tr:hover {
+  background-color: rgba(221, 221, 221, 0.4);
+}
+
+.table-footer {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid #ddd;
+  padding: 16px 0px;
+  background-color: white;
+}
+
+.table-footer form {
+  display: flex;
+  align-items: center;
+}
+
+.table-footer form label {
+  font-size: large;
+  font-weight: 700;
+  color: #1976d2;
+  margin-right: 10px;
+}
+
+.table-footer form input[type="text"],
+select {
+  cursor: pointer;
+  font-size: large;
+  padding: 8px 10px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}

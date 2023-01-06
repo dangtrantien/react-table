@@ -1,0 +1,39 @@
+.container-pagination {
+  display: flex;
+  align-items: center;
+}
+
+.btn-slide {
+  border: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+.btn-slide:hover {
+  border-radius: 5px;
+  background-color: rgba(221, 221, 221, 0.8);
+}
+
+.container-dots {
+  display: flex;
+  margin: 0px 10px;
+}
+
+.dot {
+  height: 30px;
+  width: 30px;
+  border: none;
+  border-radius: 50%;
+  margin: 0px 5px;
+  background: #f1f1f1;
+  cursor: pointer;
+}
+
+.dot:hover {
+  background-color: rgba(221, 221, 221, 0.4);
+}
+
+.dot.active {
+  color: white;
+  background: #1976d2;
+}
