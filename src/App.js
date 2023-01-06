@@ -111,11 +111,11 @@ export default function App() {
 
   return (
     <>
-      <h1 style={{ width: "100%", textAlign: "center" }}>Table List</h1>
+      <h1 style={{ width: "100%", textAlign: "center" }}>Movie List</h1>
 
       <div className="box">
         <div className="paper">
-          <table>
+          <table id="table">
             <TableHead
               headCells={headCells}
               order={order}
@@ -140,25 +140,24 @@ export default function App() {
                     )
                   : stableSort(rows, getComparator(order, orderBy))
                 ).map((row, index) => (
-                  <tr key={index} className="table-body">
-                    <td>{index + 1}</td>
-                    <td id="body 0" className="number">
+                  <tr key={index}>
+                    <td id="tbody-0" className="number">
                       {row.id}
                     </td>
-                    <td id="body 1">{row.media_type}</td>
-                    <td id="body 2">{row.original_language}</td>
-                    <td id="body 3">{row.original_title}</td>
-                    <td id="body 4">{row.overview}</td>
-                    <td id="body 5" className="number">
+                    <td id="tbody-1">{row.media_type}</td>
+                    <td id="tbody-2">{row.original_language}</td>
+                    <td id="tbody-3">{row.original_title}</td>
+                    <td id="tbody-4">{row.overview}</td>
+                    <td id="tbody-5" className="number">
                       {row.popularity}
                     </td>
-                    <td id="body 6">{row.poster_path}</td>
-                    <td id="body 7">{row.release_date}</td>
-                    <td id="body 8">{row.title}</td>
-                    <td id="body 9" className="number">
+                    <td id="tbody-6">{row.poster_path}</td>
+                    <td id="tbody-7">{row.release_date}</td>
+                    <td id="tbody-8">{row.title}</td>
+                    <td id="tbody-9" className="number">
                       {row.vote_average}
                     </td>
-                    <td id="body 10" className="number">
+                    <td id="tbody-10" className="number">
                       {row.vote_count}
                     </td>
                   </tr>

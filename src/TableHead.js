@@ -52,10 +52,10 @@ export default function TableHead(props) {
 
   useEffect(() => {
     if (headCells) {
-      headCells.map((data, index) => {
+      headCells.map((_data, index) => {
         if (columnId === index && onHide === true) {
-          document.getElementById(index).classList.add("hide");
-          document.getElementById(`body ${index}`).classList.add("hide");
+          document.getElementById(`thead-${index}`).classList.add("hide");
+          document.getElementById(`tbody-${index}`).classList.add("hide");
         }
       });
     }
@@ -64,12 +64,10 @@ export default function TableHead(props) {
   return (
     <thead>
       <tr>
-        <th>#</th>
         {headCells &&
           headCells.map((value, index) => (
             <th
-              className="table-head"
-              id={index}
+              id={`thead-${index}`}
               key={index}
               draggable
               // onDragStart={this.onDragStart}

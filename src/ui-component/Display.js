@@ -6,9 +6,10 @@ import "../css/display.css";
 
 export default function Display({ headCell, showColumn }) {
   const wrapperRef = useRef(null);
+  const [headCells, setHeadCells] = useState([]);
+
   const [open, setOpen] = useState();
 
-  const [columnID, setColumnID] = useState();
   const [check, setCheck] = useState(true);
 
   const handleClickOutside = (event) => {
@@ -19,53 +20,50 @@ export default function Display({ headCell, showColumn }) {
     }
   };
 
+  const handleChange = (event) => {
+    let arr = [];
+
+    if (event.target.value !== "") {
+      headCells.map((data) => {
+        if (data.includes(event.target.value.toLowerCase()) === true) {
+          arr.push(data);
+        }
+
+        setHeadCells(arr);
+      });
+    } else {
+      setHeadCells(headCell);
+    }
+  };
+
   const handleSwitch = (event, index) => {
-    setColumnID(index);
     setCheck(event.target.check);
 
-    if (event.target.check) {
-      document.getElementById(index).classList.add("hide");
-      document.getElementById(`body ${index}`).classList.add("hide");
+    if (event.target.classList.toggle("checked") === true) {
+      document.getElementById(`thead-${index}`).classList.add("hide");
+      document.getElementById(`tbody-${index}`).classList.add("hide");
     } else {
-      document.getElementById(index).classList.remove("hide");
-      document.getElementById(`body ${index}`).classList.remove("hide");
+      document.getElementById(`thead-${index}`).classList.remove("hide");
+      document.getElementById(`tbody-${index}`).classList.remove("hide");
     }
   };
 
   const handleHideAll = () => {
     setCheck(false);
 
-    [...document.getElementsByClassName("table-head")].map((data) => {
-      data.classList.add("hide");
-    });
-
-    [...document.getElementsByClassName("table-body")].map((data) => {
-      data.classList.add("hide");
-    });
+    document.getElementById("table").classList.add("hide");
   };
 
   const handleShowAll = () => {
     setCheck(true);
 
-    [...document.getElementsByClassName("table-head")].map((data) => {
-      data.classList.remove("hide");
-    });
-
-    [...document.getElementsByClassName("table-body")].map((data) => {
-      data.classList.remove("hide");
-    });
+    document.getElementById("table").classList.remove("hide");
   };
 
   useEffect(() => {
-    setOpen(showColumn);
+    setHeadCells(headCell);
 
-    // if (headCell) {
-    //   headCell.map((data, index) => {
-    //     if (document.getElementById(index).className === "hide") {
-    //       setColumnID(index);
-    //     }
-    //   });
-    // }
+    setOpen(showColumn);
 
     document.addEventListener("mousedown", handleClickOutside);
 
@@ -81,25 +79,31 @@ export default function Display({ headCell, showColumn }) {
     >
       <form>
         <label htmlFor="fname">Find column</label>
-        <input type="text" id="lname" name="lname" placeholder="Column title" />
+        <input
+          onChange={handleChange}
+          type="text"
+          id="lname"
+          name="lname"
+          placeholder="Column title"
+        />
       </form>
 
       <div className="container-switch">
-        {headCell &&
-          headCell.map((value, index) => (
-            <div key={index}>
-              <label className="switch">
-                <input
-                  type="checkbox"
-                  checked={check}
-                  onChange={(e) => handleSwitch(e, index)}
-                />
-                <span className="slider round"></span>
-              </label>
+        {headCells.map((value, index) => (
+          <div key={index}>
+            <label className="switch">
+              <input
+                id={`display-${index}`}
+                type="checkbox"
+                checked={check}
+                onChange={(e) => handleSwitch(e, index)}
+              />
+              <span className="slider round"></span>
+            </label>
 
-              <span>{value}</span>
-            </div>
-          ))}
+            <span>{value}</span>
+          </div>
+        ))}
       </div>
 
       <div className="action">
