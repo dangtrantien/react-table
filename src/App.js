@@ -141,7 +141,7 @@ export default function App() {
                   : stableSort(rows, getComparator(order, orderBy))
                 ).map((row, index) => (
                   <tr key={index} className="table-body">
-                    <td>{index}</td>
+                    <td>{index + 1}</td>
                     <td id="body 0" className="number">
                       {row.id}
                     </td>

@@ -96,7 +96,7 @@ export default function TableHead(props) {
                   style={{
                     width: 150,
                     top: 30,
-                    right: 0,
+                    left: 0,
                     color: "black",
                     fontWeight: 500,
                   }}
