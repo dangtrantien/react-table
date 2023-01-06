@@ -21,10 +21,6 @@ export default function Pagination(props) {
     rowsPerPage,
   });
 
-  if (currentPage === 0 || paginationRange.length < 2) {
-    return null;
-  }
-
   let lastPage = paginationRange[paginationRange.length - 1];
 
   const handleNextPage = () => {

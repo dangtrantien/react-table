@@ -16,12 +16,14 @@ code {
 .box {
   position: relative;
   margin: 50px 240px;
+  height: 700px;
 }
 
 .paper {
+  height: 100%;
   width: 100%;
-  overflow: auto;
   background-color: white;
+  overflow: auto;
 }
 
 ul {

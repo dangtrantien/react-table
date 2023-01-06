@@ -17,6 +17,10 @@ export function usePagination(props) {
 
     const totalPageNumbers = siblingCount + 5;
 
+    if (totalPageCount < 0) {
+      return range(1, 1);
+    }
+
     if (totalPageNumbers >= totalPageCount) {
       return range(1, totalPageCount);
     }

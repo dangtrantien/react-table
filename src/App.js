@@ -191,7 +191,7 @@ export default function App() {
           <Pagination
             currentPage={page}
             totalCount={rows.length}
-            rowsPerPage={rowsPerPage}
+            rowsPerPage={parseInt(rowsPerPage)}
             onPageChange={(page) => {
               setCurrentPage(page);
             }}
