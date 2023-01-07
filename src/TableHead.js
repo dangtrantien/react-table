@@ -10,29 +10,27 @@ import {
 
 export default function TableHead(props) {
   const {
-    headCells,
+    headColumns,
     order,
     orderBy,
-    columnId,
     onRequestSort,
     handleUnsort,
     handleSortByASC,
     handleSortByDESC,
     handleFilter,
-    onHide,
     handleHide,
     handleShow,
   } = props;
 
   const [dropDown, setDropDown] = useState(false);
-  const [headCellID, setHeadCellID] = useState();
+  const [headColumnID, setHeadColumnID] = useState();
 
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
 
   const handleClick = (id) => {
-    setHeadCellID(id);
+    setHeadColumnID(id);
     setDropDown(!dropDown);
   };
 
@@ -50,23 +48,13 @@ export default function TableHead(props) {
   //   instance.setColumnOrder(currentCols);
   // };
 
-  useEffect(() => {
-    if (headCells) {
-      headCells.map((_data, index) => {
-        if (columnId === index && onHide === true) {
-          document.getElementById(`thead-${index}`).classList.add("hide");
-          document.getElementById(`tbody-${index}`).classList.add("hide");
-        }
-      });
-    }
-  }, [headCells, columnId, onHide]);
-
   return (
     <thead>
       <tr>
-        {headCells &&
-          headCells.map((value, index) => (
+        {headColumns &&
+          headColumns.map((value, index) => (
             <th
+              className="thead"
               id={`thead-${index}`}
               key={index}
               draggable
@@ -99,7 +87,7 @@ export default function TableHead(props) {
                     fontWeight: 500,
                   }}
                   className={
-                    dropDown === true && headCellID === index ? "" : "hide"
+                    dropDown === true && headColumnID === index ? "" : "hide"
                   }
                 >
                   <li
@@ -160,16 +148,14 @@ export default function TableHead(props) {
 }
 
 TableHead.propTypes = {
-  headCell: PropTypes.array,
+  headColumns: PropTypes.array,
   order: PropTypes.string,
   orderBy: PropTypes.string,
-  columnId: PropTypes.any,
   onRequestSort: PropTypes.any,
   handleUnsort: PropTypes.func,
   handleSortByASC: PropTypes.func,
   handleSortByDESC: PropTypes.func,
   handleFilter: PropTypes.func,
-  onHide: PropTypes.bool,
   handleHide: PropTypes.func,
   handleShow: PropTypes.func,
 };

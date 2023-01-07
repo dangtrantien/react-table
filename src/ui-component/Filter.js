@@ -4,12 +4,14 @@ import "../css/filter.css";
 
 // ==============================|| FILTER ||============================== //
 
-export default function Filter({ headCell, filter }) {
+export default function Filter({ headColumns, filter }) {
   const wrapperRef = useRef(null);
-  const [column, setColumn] = useState();
-  const [operator, setOperator] = useState();
 
   const [open, setOpen] = useState(filter);
+
+  const [column, setColumn] = useState();
+  const [operator, setOperator] = useState();
+  const [value, setValue] = useState("");
 
   const handleClickOutside = (event) => {
     if (filter === true) {
@@ -25,6 +27,10 @@ export default function Filter({ headCell, filter }) {
 
   const handleChangeOperator = (event) => {
     setOperator(event.target.value);
+  };
+
+  const handleChangeValue = (event) => {
+    setValue(event.target.value);
   };
 
   useEffect(() => {
@@ -51,8 +57,8 @@ export default function Filter({ headCell, filter }) {
           value={column}
           onChange={handleChangeColumn}
         >
-          {headCell &&
-            headCell.map((value, index) => (
+          {headColumns &&
+            headColumns.map((value, index) => (
               <option key={index} value={value}>
                 {value}
               </option>
@@ -99,14 +105,21 @@ export default function Filter({ headCell, filter }) {
       </form>
 
       <form>
-        <label htmlFor="fname">Value</label>
-        <input type="text" id="lname" name="lname" placeholder="Filter value" />
+        <label htmlFor="value">Value</label>
+        <input
+          type="text"
+          id="value"
+          name="value"
+          value={value || ""}
+          onChange={handleChangeValue}
+          placeholder="Filter value"
+        />
       </form>
     </div>
   );
 }
 
 Filter.propTypes = {
-  headCell: PropTypes.array,
+  headColumns: PropTypes.array,
   filter: PropTypes.bool,
 };

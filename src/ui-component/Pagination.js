@@ -44,7 +44,7 @@ export default function Pagination(props) {
       <div className="container-dots">
         {paginationRange.map((pageNumber) => {
           if (pageNumber === DOTS) {
-            return <div key={pageNumber}>&#8230;</div>;
+            return <div>&#8230;</div>;
           }
 
           return (

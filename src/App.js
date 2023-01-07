@@ -10,7 +10,7 @@ import API from "./API";
 const api = new API();
 
 export default function App() {
-  const [headCells, setHeadCells] = useState([]);
+  const [headColumns, setHeadColumns] = useState([]);
   const [rows, setRows] = useState([]);
 
   const [order, setOder] = useState("asc");
@@ -19,9 +19,7 @@ export default function App() {
   const [page, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [columnID, setColumnID] = useState();
   const [filter, setFilter] = useState(false);
-  const [hide, setHide] = useState(false);
   const [show, setShow] = useState(false);
 
   const descendingComparator = (a, b, orderBy) => {
@@ -80,9 +78,18 @@ export default function App() {
     setFilter(!filter);
   };
 
-  const handleHide = (property) => {
-    setColumnID(property);
-    setHide(true);
+  const handleHide = (index) => {
+    document.getElementById(`thead-${index}`).classList.add("hide");
+
+    rows.map((_data, i) => {
+      if (document.getElementsByClassName("tbody").item(i)) {
+        document
+          .getElementsByClassName("tbody")
+          .item(i)
+          .children.item(index)
+          .classList.add("hide");
+      }
+    });
   };
 
   const handleShow = () => {
@@ -102,7 +109,7 @@ export default function App() {
         delete res.genre_ids;
         delete res.video;
 
-        setHeadCells(Object.keys(res));
+        setHeadColumns(Object.keys(res));
       });
 
       setRows(result.data.items);
@@ -115,14 +122,12 @@ export default function App() {
 
       <div className="box">
         <div className="paper">
-          <table id="table">
+          <table>
             <TableHead
-              headCells={headCells}
+              headColumns={headColumns}
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              columnId={columnID}
-              onHide={hide}
               handleUnsort={handleUnsort}
               handleSortByASC={handleSortByASC}
               handleSortByDESC={handleSortByDESC}
@@ -140,34 +145,30 @@ export default function App() {
                     )
                   : stableSort(rows, getComparator(order, orderBy))
                 ).map((row, index) => (
-                  <tr key={index}>
-                    <td id="tbody-0" className="number">
-                      {row.id}
-                    </td>
-                    <td id="tbody-1">{row.media_type}</td>
-                    <td id="tbody-2">{row.original_language}</td>
-                    <td id="tbody-3">{row.original_title}</td>
-                    <td id="tbody-4">{row.overview}</td>
-                    <td id="tbody-5" className="number">
-                      {row.popularity}
-                    </td>
-                    <td id="tbody-6">{row.poster_path}</td>
-                    <td id="tbody-7">{row.release_date}</td>
-                    <td id="tbody-8">{row.title}</td>
-                    <td id="tbody-9" className="number">
-                      {row.vote_average}
-                    </td>
-                    <td id="tbody-10" className="number">
-                      {row.vote_count}
-                    </td>
+                  <tr key={index} className="tbody">
+                    <td className="number">{row.id}</td>
+                    <td>{row.media_type}</td>
+                    <td>{row.original_language}</td>
+                    <td>{row.original_title}</td>
+                    <td>{row.overview}</td>
+                    <td className="number">{row.popularity}</td>
+                    <td>{row.poster_path}</td>
+                    <td>{row.release_date}</td>
+                    <td>{row.title}</td>
+                    <td className="number">{row.vote_average}</td>
+                    <td className="number">{row.vote_count}</td>
                   </tr>
                 ))}
             </tbody>
           </table>
 
-          <Filter headCell={headCells} filter={filter} />
+          <Filter headColumns={headColumns} filter={filter} />
 
-          <Display headCell={headCells} showColumn={show} />
+          <Display
+            headColumns={headColumns}
+            bodyColumns={rows}
+            displayColumn={show}
+          />
         </div>
 
         <div className="table-footer">

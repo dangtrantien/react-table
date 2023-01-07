@@ -17,7 +17,7 @@
   color: #2196f3;
 }
 
-.container-show-column form input[type="text"] {
+.container-show-column form input[type="search"] {
   width: 100%;
   font-size: large;
   padding: 12px 20px;
@@ -27,7 +27,7 @@
   border-bottom: 2px solid #2196f3;
 }
 
-.container-show-column form input[type="text"]:focus {
+.container-show-column form input[type="search"]:focus {
   outline: none;
 }
 

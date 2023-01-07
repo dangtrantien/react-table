@@ -4,16 +4,21 @@ import "../css/display.css";
 
 // ==============================|| DISPLAY COLUMN ||============================== //
 
-export default function Display({ headCell, showColumn }) {
+export default function Display({ headColumns, bodyColumns, displayColumn }) {
   const wrapperRef = useRef(null);
-  const [headCells, setHeadCells] = useState([]);
 
   const [open, setOpen] = useState();
+
+  const [list, setList] = useState({
+    search: "",
+    headColumn: [],
+  });
+  const [bodyColumn, setBodyColumn] = useState([]);
 
   const [check, setCheck] = useState(true);
 
   const handleClickOutside = (event) => {
-    if (showColumn === true) {
+    if (displayColumn === true) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setOpen(false);
       }
@@ -21,19 +26,15 @@ export default function Display({ headCell, showColumn }) {
   };
 
   const handleChange = (event) => {
-    let arr = [];
+    const results = headColumns.filter((data) => {
+      if (event.target.value === "") return data;
+      return data.toLowerCase().includes(event.target.value.toLowerCase());
+    });
 
-    if (event.target.value !== "") {
-      headCells.map((data) => {
-        if (data.includes(event.target.value.toLowerCase()) === true) {
-          arr.push(data);
-        }
-
-        setHeadCells(arr);
-      });
-    } else {
-      setHeadCells(headCell);
-    }
+    setList({
+      search: event.target.value,
+      headColumn: results,
+    });
   };
 
   const handleSwitch = (event, index) => {
@@ -41,36 +42,86 @@ export default function Display({ headCell, showColumn }) {
 
     if (event.target.classList.toggle("checked") === true) {
       document.getElementById(`thead-${index}`).classList.add("hide");
-      document.getElementById(`tbody-${index}`).classList.add("hide");
+
+      bodyColumn.map((_data, i) => {
+        if (document.getElementsByClassName("tbody").item(i)) {
+          document
+            .getElementsByClassName("tbody")
+            .item(i)
+            .children.item(index)
+            .classList.add("hide");
+        }
+      });
     } else {
       document.getElementById(`thead-${index}`).classList.remove("hide");
-      document.getElementById(`tbody-${index}`).classList.remove("hide");
+
+      bodyColumn.map((_data, i) => {
+        if (document.getElementsByClassName("tbody").item(i)) {
+          document
+            .getElementsByClassName("tbody")
+            .item(i)
+            .children.item(index)
+            .classList.remove("hide");
+        }
+      });
     }
   };
 
   const handleHideAll = () => {
     setCheck(false);
 
-    document.getElementById("table").classList.add("hide");
+    list.headColumn.map((_data, index) => {
+      document
+        .getElementsByClassName("thead")
+        .item(index)
+        .classList.add("hide");
+
+      bodyColumn.map((_data, i) => {
+        if (document.getElementsByClassName("tbody").item(i)) {
+          document
+            .getElementsByClassName("tbody")
+            .item(i)
+            .children.item(index)
+            .classList.add("hide");
+        }
+      });
+    });
   };
 
   const handleShowAll = () => {
     setCheck(true);
 
-    document.getElementById("table").classList.remove("hide");
+    list.headColumn.map((_data, index) => {
+      document
+        .getElementsByClassName("thead")
+        .item(index)
+        .classList.remove("hide");
+
+      bodyColumn.map((_data, i) => {
+        if (document.getElementsByClassName("tbody").item(i)) {
+          document
+            .getElementsByClassName("tbody")
+            .item(i)
+            .children.item(index)
+            .classList.remove("hide");
+        }
+      });
+    });
   };
 
   useEffect(() => {
-    setHeadCells(headCell);
+    setOpen(displayColumn);
 
-    setOpen(showColumn);
+    setList({ headColumn: headColumns });
+
+    setBodyColumn(bodyColumns);
 
     document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [headCell, showColumn]);
+  }, [headColumns, bodyColumns, displayColumn]);
 
   return (
     <div
@@ -78,32 +129,39 @@ export default function Display({ headCell, showColumn }) {
       className={open === true ? "container-show-column" : "hide"}
     >
       <form>
-        <label htmlFor="fname">Find column</label>
+        <label htmlFor="search">Find column</label>
         <input
+          type="search"
+          id="search"
+          name="search"
+          value={list.search || ""}
           onChange={handleChange}
-          type="text"
-          id="lname"
-          name="lname"
           placeholder="Column title"
         />
       </form>
 
       <div className="container-switch">
-        {headCells.map((value, index) => (
-          <div key={index}>
-            <label className="switch">
-              <input
-                id={`display-${index}`}
-                type="checkbox"
-                checked={check}
-                onChange={(e) => handleSwitch(e, index)}
-              />
-              <span className="slider round"></span>
-            </label>
+        {!list.headColumn.length ? (
+          <p style={{ paddingLeft: 12 }}>
+            Your query did not return any results
+          </p>
+        ) : (
+          list.headColumn.map((value, index) => (
+            <div key={index}>
+              <label className="switch">
+                <input
+                  id={`display-${index}`}
+                  type="checkbox"
+                  checked={check}
+                  onChange={(e) => handleSwitch(e, index)}
+                />
+                <span className="slider round"></span>
+              </label>
 
-            <span>{value}</span>
-          </div>
-        ))}
+              <span>{value}</span>
+            </div>
+          ))
+        )}
       </div>
 
       <div className="action">
@@ -115,6 +173,7 @@ export default function Display({ headCell, showColumn }) {
 }
 
 Display.propTypes = {
-  headCell: PropTypes.array,
-  showColumn: PropTypes.bool,
+  headColumns: PropTypes.array,
+  bodyColumns: PropTypes.array,
+  displayColumn: PropTypes.bool,
 };
